@@ -3,7 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			demo: [
 				{
-					title: "FIRST",
+					title: "FIRST 1",
 					background: "white",
 					initial: "white"
 				},
@@ -11,6 +11,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					title: "SECOND",
 					background: "white",
 					initial: "white"
+				},
+				{
+					title: "THIRD",
+					background: "white",
+					initial: "white"
+				}
+			],
+			contacts: [
+				{
+					name: "FIRST CONTACT",
+					phone: "123"
+				},
+				{
+					name: "SECOND CONTACT",
+					phone: "456"
 				}
 			],
 			perro: 'kyra',
@@ -20,6 +35,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
+			},
+			eliminarContacto: (indexToDelete) => {
+				console.log('se va a eliminar el contacto desde flux'+ indexToDelete)
+
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch("https://playground.4geeks.com/contact/agendas/meliodas/contacts/" + indexToDelete, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+						fetch('https://playground.4geeks.com/contact/agendas/meliodas/contacts')
+						.then( (response)=> response.json() )
+						.then( (data)=> setStore({ contacts: data.contacts }) )
+
+					})
+				// const store = getStore();
+				// setStore({ contacts: store.contacts.filter( (contacto,index)=> index != indexToDelete ) });
+
 			},
 			cambiarMensaje: () => {
 				console.log('cambiarMensaje desde flux ')
@@ -31,6 +67,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				/**
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
+				console.log('estoy haciendo algo')
+				fetch('https://playground.4geeks.com/contact/agendas/meliodas/contacts')
+				.then( (response)=> response.json() )
+				.then( (data)=> setStore({ contacts: data.contacts }) )
+
+				
 			},
 			changeColor: (index, color) => {
 				//get the store
